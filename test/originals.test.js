@@ -53,3 +53,17 @@ test('the launch step refuses a coin that copies an earlier one, and frees the t
     assert.equal((await call(port, 'POST', '/api/launch/prepare', { name: 'Tri', symbol: 'TRI', creator: W2, art: D })).status, 200);
   } finally { server.close(); }
 });
+
+test('the home page list shows every coin on the site, including ones launched without a pad (the founder coin)', async () => {
+  const { createLaunches } = require('../launches.js');
+  const A = 'BgbV6XDdNYLu7eViCQayZk2tpwTeEGpeFwETYYi8gv2k', W = '6CYUEjx95WJSCsYzXoEK7qnvBsA3j6i3ncGm5osGTGik';
+  const launches = createLaunches({ inspect: async () => ({ status: 200, body: { raisedSol: 0, thresholdSol: 85, progress: 0, migrated: false } }), logger: { error() {} } });
+  launches.record({ pool: A, mint: A, name: 'Founder', symbol: 'NOVAMP', creator: W, art: '', pad: '' });
+  const server = createApp({ art: createArt({}), launches, homePad: 'novamppad', launcher: { info: () => ({ enabled: true, cluster: 'devnet', platformPct: 10 }) } });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  try {
+    const r = await call(server.address().port, 'GET', '/api/launches?pad=novamppad');
+    assert.equal(r.body.launches.length, 1);
+    assert.equal(r.body.launches[0].symbol, 'NOVAMP');
+  } finally { server.close(); }
+});

@@ -669,7 +669,9 @@ function createApp(opts) {
     if (pathname === '/api/launches') {
       const noStore = Object.assign({}, JSON_TYPE, { 'Cache-Control': 'public, max-age=15' });
       if (!launches) return send(res, 200, JSON.stringify({ launches: [] }), noStore);
-      const padQ = url.searchParams.get('pad') || '';
+      // One site, one launchpad: its page asks for its own slug, but every coin on the site belongs on it, including the founder coin.
+      let padQ = url.searchParams.get('pad') || '';
+      if (homePad && padQ === homePad) padQ = '';
       launches.list(padQ).then(async items => ({ items, usd: padQ ? await unitUsd(padPairMint(padQ)) : undefined })).then(r => send(res, 200, req.method === 'HEAD' ? '' : JSON.stringify({ launches: r.items, usdPerUnit: r.usd }), noStore))
         .catch(() => send(res, 500, JSON.stringify({ error: 'server_error' }), Object.assign({}, JSON_TYPE, { 'Cache-Control': 'no-store' })));
       return;
