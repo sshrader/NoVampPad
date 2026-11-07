@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Launch the official coin · {{name}}</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">{{name}}</a>
+    <div class="row">
+      <a class="btn" href="/admin">Fees</a>
+      <span class="chip-net" data-net-only="devnet" title="Devnet: test coins only, no real money">Devnet</span>
+      <span class="chip-net live" data-net-only="mainnet-beta" hidden title="Live: real SOL">Live</span>
+    </div>
+  </header>
+
+  <div class="stack">
+    <h1 style="font-size:clamp(2rem,5vw,3.2rem)">Launch the official coin</h1>
+    <p class="lede">Admin only. This launches {{name}}'s own coin on pump.fun. Only the admin wallet can sign it, and it can only be launched once.</p>
+  </div>
+
+  <p class="dl-status bad" id="ol-note" role="alert" hidden></p>
+
+  <section class="panel" id="ol-main" hidden aria-labelledby="ol-h">
+    <div class="launchgrid">
+      <div class="fields">
+        <h2 id="ol-h">The coin</h2>
+        <dl class="facts">
+          <dt>Name</dt><dd id="ol-name"></dd>
+          <dt>Ticker</dt><dd id="ol-sym"></dd>
+          <dt>About</dt><dd id="ol-desc"></dd>
+          <dt>Admin wallet</dt><dd class="mono" id="ol-wallet"></dd>
+        </dl>
+        <p class="hint">The name, ticker, description and logo are set by the site (FOUNDER_NAME, FOUNDER_SYMBOL, FOUNDER_DESCRIPTION and the founder logo). Add links and a first buy below.</p>
+      </div>
+      <div class="coinprev" aria-label="Preview of the coin">
+        <div class="pic" id="cp-pic"><img id="ol-img" alt="" width="200" height="200"></div>
+        <strong id="ol-name2"></strong>
+        <span class="tick" id="ol-sym2"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel stack2" id="ol-launch" hidden>
+    <h2>Launch it</h2>
+    <p class="hint" id="dl-hint">Connect the admin wallet<span data-net-only="devnet"> (Phantom set to Devnet)</span> to continue.</p>
+    <p class="dl-status bad" id="ol-wrong" role="alert" hidden></p>
+    <div id="devnet-launch" hidden class="stack">
+      <details class="links" id="links" open>
+        <summary>Website and socials</summary>
+        <div class="links-body">
+          <label>Website <input type="text" id="l-web" maxlength="200" autocomplete="off" placeholder="https://yoursite.xyz" inputmode="url"></label>
+          <label>X <input type="text" id="l-x" maxlength="60" autocomplete="off" placeholder="@yourproject, x.com/yourproject or a post link"></label>
+          <label>Telegram <input type="text" id="l-tg" maxlength="60" autocomplete="off" placeholder="@yourproject or t.me/yourproject"></label>
+          <p class="hint">These go into the token's public details and are locked once the launch starts.</p>
+        </div>
+      </details>
+      <label class="buyfirst">Buy at launch (optional)
+        <span class="buyrow"><input type="number" id="l-buy" min="0" max="5" step="0.01" inputmode="decimal" placeholder="0" aria-describedby="l-buy-hint"><span>SOL</span></span>
+        <span class="hint" id="l-buy-hint">With the lookup table set, your buy is in the same transaction that creates the coin, so nobody can buy before you.</span>
+      </label>
+      <div class="row">
+        <button type="button" class="btn go" id="dl-connect">Connect wallet</button>
+        <button type="button" class="btn go" id="dl-go" hidden>Launch coin</button>
+      </div>
+      <p class="dl-status" id="dl-status" role="status"></p>
+      <div class="dl-result" id="dl-result" hidden></div>
+    </div>
+  </section>
+
+  <section class="panel stack2" id="ol-done" hidden>
+    <h2>The official coin is live</h2>
+    <div class="dl-result" id="ol-ca"></div>
+    <div class="row"><a class="btn go" id="ol-open" href="/">Open the coin page</a></div>
+  </section>
+</main>
+<script src="/net.js"></script>
+<script src="/wallet.js"></script>
+<script src="/walletbar.js"></script>
+<script src="/admin-launch.js"></script>
+<script src="/launch.js"></script>
+</body>
+</html>

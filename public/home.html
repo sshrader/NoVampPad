@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{name}}</title>
+<meta name="description" content="Pick a name, a logo and your cut of the fees. Get a live Solana launchpad page where anyone can launch a coin on pump.fun.">
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<meta property="og:title" content="{{name}}: build your own launchpad">
+<meta property="og:description" content="Pick a name, a logo and your cut of the fees. Get a live Solana launchpad in a minute.">
+<meta property="og:image" content="{{ogImage}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">{{name}}</a>
+    <nav class="nav" aria-label="Sections"><a href="#board">Leaderboard</a><a href="#pads">Pads</a><a href="#how">How it works</a><a href="#fees">Fees</a><a href="#faq">FAQ</a></nav>
+    <div class="row">
+      <span class="chip-net" data-net-only="devnet" title="Devnet: test coins only, no real money">Devnet</span>
+      <span class="chip-net live" data-net-only="mainnet-beta" hidden title="Live: real SOL">Live</span>
+      <a class="btn go" href="/build">Build a pad</a>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero-text">
+      <h1 id="h1">Build your own launchpad.</h1>
+      <p class="lede">Pick a name, a logo and your cut of the fees. Get a live Solana page where anyone can launch a coin, and earn from every one.</p>
+      <div class="row">
+        <a class="btn go big" href="/build">Build a pad</a>
+        <a class="btn big" href="#board">See the leaderboard</a>
+      </div>
+      <dl class="stats" aria-label="Live totals">
+        <div><dt>Pads</dt><dd id="st-pads">0</dd></div>
+        <div><dt>Coins launched</dt><dd id="st-coins">0</dd></div>
+        <div><dt>SOL raised</dt><dd id="st-sol">0</dd></div>
+      </dl>
+    </div>
+    <div class="bp" aria-hidden="true">
+      <div class="glow" id="glow"></div>
+      <div class="mock" id="mock" style="--accent:#5b8cff;--on-accent:#ffffff">
+        <div class="mock-bar"><i></i><i></i><i></i><span id="mock-url">/p/northwind</span></div>
+        <div class="mock-body">
+          <div class="mock-head">
+            <div class="mock-logo" id="mock-logo">N</div>
+            <div><div class="mock-name" id="mock-name">Northwind</div><div class="mock-tag" id="mock-tag">Fresh coins, fair fees.</div></div>
+          </div>
+          <div class="mock-grid"><div class="mock-field">Coin name</div><div class="mock-field">Ticker</div></div>
+          <div class="mock-btn">Launch coin</div>
+          <div class="mock-split">
+            <div class="feebar"><i class="f-launcher" id="mk-l" style="width:70%"></i><i class="f-owner" id="mk-o" style="width:20%"></i><i class="f-platform" style="width:10%"></i></div>
+            <div class="feekey"><span class="k-launcher">Launcher <b id="mk-lt">70%</b></span><span class="k-owner">Owner <b id="mk-ot">20%</b></span><span class="k-platform">{{name}} <b>10%</b></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="board" aria-labelledby="board-h">
+    <div class="band-head">
+      <h2 id="board-h">Leaderboard</h2>
+      <div class="seg" id="board-tabs" role="tablist" aria-label="Leaderboard view">
+        <button type="button" role="tab" id="tab-pads" data-v="pads" aria-selected="true" aria-controls="boardlist" aria-pressed="true">Pads</button>
+        <button type="button" role="tab" id="tab-coins" data-v="coins" aria-selected="false" aria-controls="coinlist" aria-pressed="false">Top coins</button>
+      </div>
+    </div>
+    <p class="hint" id="board-sub">Pads ranked by coins launched on them, then by graduated coins.</p>
+    <div class="official" id="official" hidden>
+      <img id="of-img" alt="" width="72" height="72">
+      <div class="of-text">
+        <h3 class="of-title"><span id="of-name"></span> <span class="hint" id="of-sym"></span> <span class="badge">Official coin</span></h3>
+        <div class="dl-result"><code class="cavalue" id="of-ca"></code></div>
+        <div class="curve-line"><div class="curvebar" role="img" aria-label="How full the bonding curve is"><i id="of-bar" style="width:0%"></i></div><span class="hint" id="of-pct"></span></div>
+      </div>
+      <dl class="ofstats">
+        <div><dt>Raised</dt><dd id="of-raised">–</dd></div>
+        <div><dt>Status</dt><dd id="of-status">–</dd></div>
+        <div><dt>Fees waiting</dt><dd id="of-fees">–</dd></div>
+      </dl>
+      <a class="btn go" id="of-open" href="/">View the coin</a>
+    </div>
+    <ol class="board" id="boardlist" aria-live="polite"></ol>
+    <ol class="board" id="coinlist" aria-live="polite" hidden></ol>
+    <p class="hint" id="board-note">Loading…</p>
+  </section>
+
+  <section class="band" id="pads" aria-labelledby="pads-h">
+    <h2 id="pads-h">Newest pads</h2>
+    <div class="padcards" id="padcards" aria-live="polite"></div>
+    <p class="hint" id="pads-note">Loading…</p>
+  </section>
+
+  <section class="band" id="how" aria-labelledby="how-h">
+    <h2 id="how-h">From idea to live in a few minutes</h2>
+    <ol class="steps">
+      <li><b>Design it</b><span>Pick a name, upload a logo, choose an accent color and how sharp or round the corners are. A live preview shows your page as you go.</span></li>
+      <li><b>Set your cut</b><span>Choose what share of creator fees comes to you. The coin's launcher always keeps at least half.</span></li>
+      <li><b>Share it</b><span>Sign once with your wallet and your page is live. Anyone can launch a coin on it, and fees flow to you on-chain.</span></li>
+    </ol>
+  </section>
+
+  <section class="band" id="fees" aria-labelledby="fees-h">
+    <div class="aboutgrid">
+      <div class="stack">
+        <h2 id="fees-h">Fees, split on-chain</h2>
+        <p class="about" id="fees-text">Every trade on a pump.fun coin pays a creator fee. On a pad, that fee is shared three ways by pump.fun's own fee-sharing, so nobody has to trust anybody to pay out. The split is written on-chain when a coin launches and nobody can change it afterwards, not even us.</p>
+        <ul class="feelist">
+          <li><b>The coin's launcher</b> keeps everything that is left, and always at least half.</li>
+          <li><b>The pad owner</b> gets the share they chose when they built the pad: from 0% up to <span id="fl-max">40</span>%.</li>
+          <li><b>{{name}}</b> gets <span id="fl-plat">10</span>% of every coin's fees.</li>
+        </ul>
+        <p class="about" id="fees-example">For example, if a coin earns 1 SOL in creator fees on a pad with a <span id="fe-o">20</span>% owner share: the launcher gets <b id="fe-l">0.70</b> SOL, the pad owner <b id="fe-ow">0.20</b> SOL, and {{name}} <b id="fe-p">0.10</b> SOL.</p>
+        <p class="hint">Fees wait on the coin until someone presses Send out fees on its page. Anyone can press it, and it always pays the wallets in the split, never the person who pressed. On a pad with a pool pair other than SOL, the same split is paid in that token. Creator fees are only a slice of each trade, not the trading volume.</p>
+      </div>
+      <div class="stack">
+        <div class="feebar" role="img" aria-label="Example split"><i class="f-launcher" id="fb-l" style="width:70%"></i><i class="f-owner" id="fb-o" style="width:20%"></i><i class="f-platform" id="fb-p" style="width:10%"></i></div>
+        <div class="feekey"><span class="k-launcher">Coin launcher <b id="fk-l">70%</b></span><span class="k-owner">Pad owner <b id="fk-o">20%</b></span><span class="k-platform">{{name}} <b id="fk-p">10%</b></span></div>
+        <p class="hint" id="fees-note">Shown with an example 20% owner share.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">Good to know</h2>
+    <div class="faq">
+      <details data-net-only="devnet"><summary>Is this real money?</summary><p>Not yet. This site is running on devnet, Solana's test network, so every coin and every SOL is play money.</p></details>
+      <details data-net-only="mainnet-beta" hidden><summary>Is this real money?</summary><p>Yes. Every buy, sell and launch uses real SOL. Only spend what you can afford to lose.</p></details>
+      <details><summary>Do you hold anyone's funds?</summary><p>No. Your wallet signs everything, and fees are paid by pump.fun's fee sharing straight to the wallets in each coin's split. This site never holds keys or balances.</p></details>
+      <details><summary>What does building a pad cost?</summary><p>Nothing to build. When someone launches a coin on your pad, they pay the network fees and the small rent for the new accounts.</p></details>
+      <details><summary>What can't I build?</summary><p>Pads that copy a real person, brand or project are not allowed, and names are checked. A pad that breaks the rules can be taken down.</p></details>
+      <details><summary>How do I get paid?</summary><p>Anyone can press Send out fees on a coin's page. The money always goes to the wallets in that coin's split, which includes yours.</p></details>
+    </div>
+  </section>
+
+  <p class="foot">Want a trading terminal for Solana coins? <a href="/go/lute" target="_blank" rel="sponsored noopener">Try Lute</a> (referral link).</p>
+  <p class="foot" data-net-only="devnet">Test version on Solana devnet. Coins have no value.</p>
+  <p class="foot" data-net-only="mainnet-beta" hidden>Coins here are created by users, are not endorsed by {{name}}, and can lose all their value. Not financial advice.</p>
+</main>
+<script src="/net.js"></script>
+<script src="/home.js"></script>
+</body>
+</html>

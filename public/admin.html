@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fees · {{name}}</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<style>
+.fees { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.fees li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.fees .who { display: grid; min-width: 0; }
+.fees .who b { font-weight: 600; overflow-wrap: anywhere; }
+.fees .who span { font: 12px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.fees .amt { font: 14px/1.4 var(--mono); }
+.big { font: 700 2rem/1.1 var(--display); }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">{{name}}</a>
+    <div class="row">
+      <a class="btn" href="/admin/launch">Launch the official coin</a>
+      <span class="chip-net" data-net-only="devnet" title="Devnet: test coins only, no real money">Devnet</span>
+      <span class="chip-net live" data-net-only="mainnet-beta" hidden title="Live: real SOL">Live</span>
+    </div>
+  </header>
+
+  <section class="panel stack2" aria-labelledby="fees-h">
+    <h2 id="fees-h">Platform fees</h2>
+    <p class="hint">{{name}}'s share of the creator fees waiting on every coin. Sending them out also pays the launcher their share; the payout always goes to the two wallets in the coin's fee split. This page holds no keys: it asks the server to prepare each payout and your wallet signs it and pays the network fee.</p>
+    <div class="row">
+      <button type="button" class="btn go" id="connect">Connect wallet</button>
+      <span class="dl-status" id="who" role="status"></span>
+    </div>
+    <p class="dl-status bad" id="note" role="alert" hidden></p>
+    <div id="body" hidden class="stack">
+      <div><span class="big" id="total">0</span> <span class="hint">SOL waiting across <span id="count">0</span> coins</span></div>
+      <div class="row">
+        <button type="button" class="btn go" id="claim-all">Send out all</button>
+        <button type="button" class="btn" id="reload">Refresh</button>
+      </div>
+      <ul class="fees" id="list"></ul>
+    </div>
+    <p class="dl-status" id="status" role="status"></p>
+  </section>
+</main>
+<script src="/net.js"></script>
+<script src="/wallet.js"></script>
+<script src="/walletbar.js"></script>
+<script src="/admin.js"></script>
+</body>
+</html>

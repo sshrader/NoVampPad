@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{name}}</title>
+<meta name="description" content="{{description}}">
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<meta property="og:title" content="{{name}}">
+<meta property="og:description" content="{{tagline}}">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="" id="brand"><img id="pad-logo" alt="" width="30" height="30" hidden>{{name}}</a>
+    <nav class="nav" aria-label="Sections"><a href="#recent">Coins</a><a href="#start">Launch a coin</a><a href="#trade">Trade</a><a href="#about">Fees</a></nav>
+    <div class="row">
+      <span class="chip-net" data-net-only="devnet" title="Devnet: test coins only, no real money">Devnet</span>
+      <span class="chip-net live" data-net-only="mainnet-beta" hidden title="Live: real SOL">Live</span>
+    </div>
+  </header>
+
+  <section class="padhero" aria-labelledby="h1">
+    <h1 id="h1">Launch your coin on {{name}}.</h1>
+    <p class="lede">{{tagline}}</p>
+    <div class="row"><span class="badge" id="b-private" hidden>Private launchpad</span><span class="badge" id="b-buy" hidden></span><span class="badge" id="b-pair" hidden></span><a class="btn" href="/rules">Rules</a></div>
+    <div class="row"><a class="btn go" href="#start">Launch a coin</a><a class="btn" href="#recent">See the coins <span class="hint" id="coin-count"></span></a></div>
+  </section>
+
+  <section class="stack" id="padinfo" hidden>
+    <img class="padbanner" id="padbanner" alt="" hidden>
+    <p class="padabout" id="padabout" hidden></p>
+  </section>
+
+  <section class="panel" id="recent" aria-labelledby="recent-h">
+    <div class="head"><h2 id="recent-h">Recent coins on {{name}}</h2></div>
+    <div class="curvebox" id="curvebox" hidden>
+      <svg id="curve" viewBox="0 0 640 280" role="img" aria-labelledby="curve-t"><title id="curve-t">Recent coins placed along the bonding curve by how much they have raised</title></svg>
+      <p class="hint">Each coin sits where its raised SOL puts it. Further right is closer to full. Select one to open it.</p>
+    </div>
+    <div class="feed" id="feed" aria-live="polite"></div>
+    <p class="hint" id="feed-note">Loading the latest coins…</p>
+  </section>
+
+  <section class="panel" id="start" aria-labelledby="start-h">
+    <div class="launchgrid">
+      <form class="fields" id="coinform" novalidate autocomplete="off">
+        <h2 id="start-h">Your coin</h2>
+        <div class="aipanel" id="aipanel" hidden>
+          <b>Draw it with AI</b>
+          <span class="hint">Describe your coin in a few words. AI draws a logo and suggests a name, ticker and description you can change.</span>
+          <div class="row"><input type="text" id="ai-idea" maxlength="120" placeholder="a sleepy lighthouse keeper cat" aria-label="Describe your coin"><button type="button" class="btn go" id="ai-go">Draw it</button></div>
+          <div class="row"><button type="button" class="btn" id="ai-ideas">Give me ideas</button><button type="button" class="btn" id="ai-surprise">Surprise me</button></div>
+          <div class="ideas" id="ai-list" hidden></div>
+          <p class="status" id="ai-status" role="status"></p>
+        </div>
+        <label>Coin name <input type="text" id="c-name" maxlength="32" placeholder="Moon Lantern"></label>
+        <label>Ticker <input type="text" id="c-sym" maxlength="10" placeholder="LANTERN" spellcheck="false"></label>
+        <label>Description (optional) <textarea id="c-desc" maxlength="200" placeholder="What is this coin about?"></textarea></label>
+        <div class="field">Logo
+          <label class="drop" id="c-drop" tabindex="0">
+            <span id="c-drop-empty"><b>Drop a picture here</b><br>or click to choose one. Square works best.</span>
+            <img id="c-drop-img" alt="Your coin's logo" hidden>
+            <input type="file" id="c-file" accept="image/png,image/jpeg,image/webp,image/gif">
+          </label>
+        </div>
+        <div class="row"><button type="submit" class="btn go big" id="c-go">Continue</button></div>
+        <p class="hint">Every coin here must be an original: one coin per ticker, name and picture. <a href="/rules">How the rules work</a></p>
+        <p class="status" id="c-status" role="status"></p>
+      </form>
+      <div class="coinprev" aria-label="Preview of your coin">
+        <div class="pic" id="cp-pic"><span id="cp-letter">?</span><img id="cp-img" alt="" hidden></div>
+        <strong id="cp-name">Your coin</strong>
+        <span class="tick" id="cp-sym">TICKER</span>
+        <p class="hint">Launching on pump.fun through {{name}}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel stack2" id="launch" hidden>
+    <h2>Launch it</h2>
+    <p class="hint" id="dl-hint">Fill in your coin first. Then connect Phantom<span data-net-only="devnet">, set to Devnet,</span> and launch it<span data-net-only="devnet"> with test SOL</span>.</p>
+    <div id="devnet-launch" hidden class="stack">
+      <details class="links" id="links">
+        <summary>Add your website and socials (optional)</summary>
+        <div class="links-body">
+          <label>Website <input type="text" id="l-web" maxlength="200" autocomplete="off" placeholder="https://yourcoin.xyz" inputmode="url"></label>
+          <label class="check"><input type="checkbox" id="l-use-pad"> Use this launchpad's link as the website</label>
+          <label>X <input type="text" id="l-x" maxlength="60" autocomplete="off" placeholder="@yourcoin, x.com/yourcoin or a post link"></label>
+          <label>Telegram <input type="text" id="l-tg" maxlength="60" autocomplete="off" placeholder="@yourcoin or t.me/yourcoin"></label>
+          <p class="hint">These go into the token's public details. They are locked once you start the launch. Use your own links only.</p>
+        </div>
+      </details>
+      <label class="buyfirst">Buy at launch (optional)
+        <span class="buyrow"><input type="number" id="l-buy" min="0" max="5" step="0.01" inputmode="decimal" placeholder="0" aria-describedby="l-buy-hint"><span>SOL</span></span>
+        <span class="hint" id="l-buy-hint">When launching is set up for it, your buy is in the same transaction that creates the coin, so nobody can buy before you. Otherwise it is the last step, a separate approval a very fast bot could beat. Needs enough SOL for the buy plus network fees.</span>
+      </label>
+      <div class="row">
+        <button type="button" class="btn go" id="dl-connect">Connect wallet</button>
+        <button type="button" class="btn go" id="dl-go" hidden>Launch coin</button>
+      </div>
+      <p class="dl-status" id="dl-status" role="status"></p>
+      <div class="dl-result" id="dl-result" hidden></div>
+    </div>
+  </section>
+
+  <section class="panel" id="padreport" hidden aria-labelledby="padreport-h">
+    <h2 id="padreport-h"></h2>
+    <p id="padreport-text"></p>
+    <p class="hint" id="padreport-facts"></p>
+    <p class="hint" id="padreport-note" hidden>Written by an AI mascot from live numbers. Not advice.</p>
+  </section>
+
+
+  <details class="panel trade" id="trade">
+    <summary>Trade a coin by its address</summary>
+    <div class="trade-body">
+      <p class="hint">Paste a coin address (CA), see how full its curve is, and buy it. Your wallet signs; nothing is sent without your approval.</p>
+      <div class="trade-row">
+        <input type="text" id="t-pool" placeholder="Coin address" autocomplete="off" spellcheck="false" aria-label="Coin address">
+        <button type="button" class="btn" id="t-load">Load</button>
+      </div>
+      <div id="t-info" hidden class="stack">
+        <div class="tbar" role="img" aria-label="Curve progress"><i id="t-bar"></i></div>
+        <p class="dl-status" id="t-prog"></p>
+        <div class="trade-row">
+          <input type="number" id="t-amt" value="0.1" step="any" inputmode="decimal" aria-label="Amount in SOL">
+          <span class="hint" id="t-unit">SOL</span>
+          <span class="hint" id="t-usd" aria-live="polite"></span>
+          <button type="button" class="btn go" id="t-buy">Buy</button>
+        </div>
+      </div>
+      <div class="trade-row" id="t-fees" hidden>
+        <span class="dl-status" id="t-fee-text"></span>
+        <button type="button" class="btn" id="t-claim">Send out fees</button>
+      </div>
+      <p class="dl-status bad" id="t-err" role="alert" hidden></p>
+      <p class="dl-status" id="t-status" role="status"></p>
+    </div>
+  </details>
+
+  <section id="about" class="band" aria-labelledby="about-h">
+    <h2 id="about-h">How fees work here</h2>
+    <div class="aboutgrid">
+      <div class="stack">
+        <p class="about" id="fee-note-how">Every trade pays a creator fee, shared on-chain between the wallets in each coin's split.</p>
+        <p class="about" data-net-only="devnet">{{name}} runs on Solana devnet for now, so every coin and every SOL here is play money.</p>
+        <p class="about" data-net-only="mainnet-beta" hidden>Coins here are created by users and can lose all their value.</p>
+      </div>
+      <div class="stack">
+        <p class="hint" id="holder-note" hidden></p>
+        <div class="feebar" role="img" aria-label="Fee split"><i class="f-launcher" id="fb-l"></i><i class="f-owner" id="fb-o"></i><i class="f-platform" id="fb-p"></i></div>
+        <div class="feekey"><span class="k-launcher">Coin launcher <b id="fk-l"></b></span><span class="k-owner">{{name}} owner <b id="fk-o"></b></span><span class="k-platform" id="fk-pname">Platform <b id="fk-p"></b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot"><a href="/rules" id="built-with">NoVampPad</a>: the rules. Coins here are created by users, are not endorsed by {{name}}, and can lose all their value. Not financial advice.</p>
+</main>
+<script src="/net.js"></script>
+<script src="/wallet.js"></script>
+<script src="/walletbar.js"></script>
+<script src="/image.js"></script>
+<script src="/pad.js"></script>
+<script src="/launch.js"></script>
+<script src="/trade.js"></script>
+<script src="/feed.js"></script>
+</body>
+</html>

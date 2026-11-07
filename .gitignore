@@ -1,0 +1,4 @@
+node_modules/
+mainnet-data/
+data/
+*.log

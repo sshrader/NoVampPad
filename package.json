@@ -1,0 +1,18 @@
+{
+  "name": "novamppad",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A pump.fun launchpad where every coin must be an original: one coin per ticker, name and picture.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0",
+    "sharp": "^0.34.0"
+  }
+}

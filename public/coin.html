@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coin · {{name}}</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<style>
+.backs { display: flex; flex-wrap: wrap; gap: 10px; }
+.back { color: var(--text); font-weight: 600; text-underline-offset: 4px; }
+.coinpage { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 720px) { .coinpage { grid-template-columns: minmax(0, 1fr); } }
+.coinpage .pic { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--line); border-radius: 18px; background: var(--soft); display: block; }
+.coinpage .pic.noimg { display: grid; place-items: center; font: 700 4rem/1 var(--display); color: var(--muted); }
+.cp-body { display: grid; gap: 14px; min-width: 0; }
+.cp-body h1 { max-width: none; font-size: clamp(1.8rem, 5vw, 2.8rem); }
+.cp-body .sym { color: var(--muted); font-weight: 700; font-size: 1.1rem; }
+.cp-desc { margin: 0; max-width: 60ch; }
+.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; margin: 0; font-size: 14px; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; overflow-wrap: anywhere; }
+.facts a, .cp-links a { color: var(--text); text-underline-offset: 3px; }
+.cp-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.mood { display: inline-block; padding: 3px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--soft); font: 600 13px var(--font); width: fit-content; }
+.mood[data-mood="awake"] { background: var(--paper); }
+.mood[data-mood="excited"], .mood[data-mood="ready"] { background: var(--accent); color: var(--on-accent); }
+.mood[data-mood="graduated"] { background: var(--pop); color: #1c1547; }
+.pic[data-mood="sleepy"] { filter: saturate(0.6) brightness(0.9); }
+.pic[data-mood="excited"], .pic[data-mood="ready"] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent); }
+.pic[data-mood="graduated"] { border-color: var(--pop); box-shadow: 0 0 0 3px var(--pop); }
+.chat { display: grid; gap: 10px; margin-top: 22px; }
+.chat h2 { margin: 0; font: 700 1.2rem/1.2 var(--display); }
+.chat-log { display: grid; gap: 8px; max-height: 260px; overflow-y: auto; }
+.chat-log p { margin: 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 14px; max-width: 80%; overflow-wrap: anywhere; }
+.chat-log .me { justify-self: end; background: var(--accent); color: var(--on-accent); }
+.chat-log .bot { justify-self: start; background: var(--soft); }
+.chat-row { display: flex; gap: 8px; }
+.chat-row input { flex: 1 1 auto; min-width: 0; background: var(--soft); color: var(--text); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font: inherit; }
+.verified { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; background: var(--ok); color: var(--ground); font-size: 12px; font-weight: 700; }
+.verify { border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; }
+.verify summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.verify-body { display: grid; gap: 10px; margin-top: 10px; }
+.vcode { display: block; padding: 8px 10px; border-radius: 10px; background: var(--soft); border: 1px solid var(--line); font: 13px/1.4 var(--mono); overflow-wrap: anywhere; user-select: all; }
+.cp-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+a.btn { text-decoration: none; display: inline-block; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">{{name}}</a>
+    <div class="row">
+      <span class="chip-net" data-net-only="devnet" title="Devnet: test coins only, no real money">Devnet</span>
+      <span class="chip-net live" data-net-only="mainnet-beta" hidden title="Live: real SOL">Live</span>
+    </div>
+  </header>
+  <nav class="backs" aria-label="Back to">
+    <a class="btn" href="/">← {{name}}</a>
+    <a class="btn" id="back-pad" href="/" hidden>← <span id="back-pad-name"></span></a>
+  </nav>
+
+  <section class="panel" id="cp" aria-live="polite">
+    <p class="hint" id="cp-note">Loading this coin…</p>
+  </section>
+
+  <p class="foot" data-net-only="devnet">Test version on Solana devnet. Tokens here have no value.</p>
+  <p class="foot" data-net-only="mainnet-beta" hidden>Coins here are created by users, are not endorsed by {{name}}, and can lose all their value. Not financial advice.</p>
+</main>
+<script src="/net.js"></script>
+<script src="/wallet.js"></script>
+<script src="/walletbar.js"></script>
+<script src="/coin.js"></script>
+</body>
+</html>

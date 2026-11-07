@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The rules · {{name}}</title>
+<meta name="theme-color" content="#0a0b0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">{{name}}</a>
+    <div class="row"><a class="btn" href="/">Launch a coin</a></div>
+  </header>
+  <h1>One coin per ticker, name and picture.</h1>
+  <p class="lede">{{name}} refuses copies. Before your coin is built, the site checks it against every coin already launched here.</p>
+  <section class="group">
+    <h3>What counts as a copy</h3>
+    <ul class="feelist">
+      <li><b>Same ticker.</b> Case, symbols and look-alike characters are ignored, so PEPE, pepe, P3P3 and Pépé are one ticker.</li>
+      <li><b>Same name.</b> Filler words like "The", "Coin", "Token" and "Official" are ignored, so "Pepe" and "The Pepe Coin" match.</li>
+      <li><b>Same picture.</b> Resizing, cropping a little or changing a few pixels does not make a new picture. The check compares how pictures look, not the file.</li>
+    </ul>
+  </section>
+  <section class="group">
+    <h3>While you launch</h3>
+    <p class="hint">When you press Launch, your ticker, name and picture are held for 10 minutes, so nobody else can take them while you sign. If you do not sign, they are released. Once the coin exists on-chain, it counts as launched for good.</p>
+  </section>
+  <section class="group">
+    <h3>What this does not do</h3>
+    <p class="hint">The check covers coins launched on {{name}}. Anyone can still launch a copy on pump.fun or another site, so check the contract address before you buy. The rules also cannot tell who owns a name in the real world: the first coin here to use a ticker keeps it. Coins are made by users and can lose all their value.</p>
+  </section>
+  <section class="group">
+    <h3>Fees</h3>
+    <p class="hint">Creator fees are shared on-chain: 90% to the wallet that launched the coin and 10% to {{name}}.</p>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "id": "robots",
+  "name": "BoltPad",
+  "subject": "robot",
+  "subjects": "robots",
+  "tagline": "Describe a robot. Boot up its coin.",
+  "description": "Describe a robot. AI builds the logo and names it. Approve it, and launch it as a token on a Solana bonding curve.",
+  "heroTitle": "Describe a robot. Boot up its coin.",
+  "heroLede": "AI draws the mascot and names it. Keep it or scrap it, then put it on a bonding curve with your wallet.",
+  "promptLabel": "What robot?",
+  "promptPlaceholder": "a grumpy toaster robot with one eye",
+  "emptyText": "Your robot shows up here",
+  "aboutDevnet": "is a test launcher for robot-mascot coins. It runs on Solana devnet, so every coin and every SOL here is play money.",
+  "aboutMainnet": "launches robot-mascot coins on Solana. You describe a robot, AI draws it, and your wallet launches it on a bonding curve. Coins are created by users and can lose all their value.",
+  "persona": "cartoon robot mascot",
+  "imageStyle": "A bold, simple, centered mascot logo of a friendly retro robot: ",
+  "founderName": "BoltPad",
+  "founderSymbol": "BOLT",
+  "founderDescription": "The first coin booted on BoltPad.",
+  "ideas": {
+    "moods": ["grumpy", "sleepy", "cheerful", "nervous", "heroic", "smug", "dramatic", "confused", "fancy", "chill"],
+    "things": ["toaster robot", "vacuum robot", "tiny drone", "forklift robot", "garden robot", "chef robot", "lighthouse robot", "mail robot", "snowplow robot", "tea robot"],
+    "extras": ["with one big eye", "wearing a bow tie", "carrying a tiny umbrella", "on rollerblades", "with a cracked screen", "holding a wrench", "with antenna ears", "wearing headphones"]
+  },
+  "theme": {
+    "fontDisplay": "Space Grotesk",
+    "fontBody": "Inter",
+    "fontsUrl": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500..800&family=Inter:wght@400..700&display=swap",
+    "dark": { "ground": "#0b1210", "paper": "#12201b", "soft": "#183029", "text": "#e8fff6", "muted": "#9bc7b8", "edge": "#2fd6a0", "line": "#1f4a3d", "accent": "#2fd6a0", "on-accent": "#06130e", "pop": "#ffb020" },
+    "light": { "ground": "#e8f7f1", "paper": "#ffffff", "soft": "#f1fbf7", "text": "#0b2a20", "muted": "#41705f", "edge": "#0b2a20", "line": "#cfe9df", "accent": "#0ea37a", "on-accent": "#ffffff", "pop": "#ffb020" }
+  }
+}

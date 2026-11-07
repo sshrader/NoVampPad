@@ -1,0 +1,17 @@
+{
+  "name": "hatchpad-devnet",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Command-line helpers for HatchPad: throwaway keys, a payer wallet, and a free simulate-only check of the pump.fun transactions. Not used by the website.",
+  "scripts": {
+    "keys": "node 00-keys.mjs",
+    "check": "node 11-check-pump.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0"
+  }
+}

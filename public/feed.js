@@ -1,0 +1,134 @@
+/* The "Recently launched" list, and the fee wording that comes from the server's own settings. */
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  function ago(ms) {
+    const s = Math.max(0, Math.round((Date.now() - ms) / 1000));
+    if (s < 60) return 'just now';
+    const m = Math.round(s / 60);
+    if (m < 60) return m + ' min ago';
+    const h = Math.round(m / 60);
+    if (h < 24) return h + ' h ago';
+    return Math.round(h / 24) + ' d ago';
+  }
+
+  // A small chip: logo and name, linking to the coin's page.
+  function card(c) {
+    const a = document.createElement('a');
+    a.className = 'chip';
+    a.href = '/coin/' + encodeURIComponent(c.pool);
+    a.title = c.name + ' $' + c.symbol;
+    if (typeof c.imageUrl === 'string' && /^\/art\/[0-9a-f]{16}\.(png|jpg)$/.test(c.imageUrl)) {
+      const im = document.createElement('img');
+      im.src = c.imageUrl; im.alt = ''; im.width = 28; im.height = 28; im.loading = 'lazy';
+      a.appendChild(im);
+    } else {
+      const n = document.createElement('span');
+      n.className = 'noimg'; n.textContent = (c.name || '?').charAt(0).toUpperCase();
+      a.appendChild(n);
+    }
+    const t = document.createElement('span');
+    t.textContent = c.name;
+    a.appendChild(t);
+    return a;
+  }
+
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  let thresholdSol = null;
+
+  function el(name, attrs, parent) {
+    const n = document.createElementNS(SVGNS, name);
+    Object.keys(attrs || {}).forEach(k => n.setAttribute(k, attrs[k]));
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  // The recent coins, placed on the bonding curve by how far along each one is.
+  function drawCurve(list) {
+    const box = $('curvebox'), svg = $('curve');
+    box.hidden = !list.length;
+    if (!list.length) return;
+    Array.from(svg.querySelectorAll(':scope > :not(title)')).forEach(n => n.remove());
+    const L = 46, R = 22, T = 34, B = 34, W = 640, H = 280;
+    const X = p => L + p * (W - L - R);
+    const Y = p => H - B - Math.pow(p, 1.8) * (H - B - T);
+    for (let i = 0; i <= 4; i++) {
+      const p = i / 4;
+      el('line', { class: 'grid', x1: X(p), x2: X(p), y1: T - 10, y2: H - B }, svg);
+      const t = el('text', { class: 'axis', x: X(p), y: H - B + 18, 'text-anchor': i === 0 ? 'start' : i === 4 ? 'end' : 'middle' }, svg);
+      t.textContent = Number.isFinite(thresholdSol) ? (Math.round(p * thresholdSol * 100) / 100) + ' SOL' : Math.round(p * 100) + '%';
+    }
+    const ylab = el('text', { class: 'axis', x: 4, y: T - 14 }, svg); ylab.textContent = 'Price';
+    let d = '', a = '';
+    for (let i = 0; i <= 60; i++) { const p = i / 60; d += (i ? 'L' : 'M') + X(p).toFixed(1) + ' ' + Y(p).toFixed(1); }
+    a = d + 'L' + X(1) + ' ' + (H - B) + 'L' + X(0) + ' ' + (H - B) + 'Z';
+    el('path', { class: 'area', d: a }, svg);
+    el('path', { class: 'line', d: d }, svg);
+    el('circle', { class: 'goal', cx: X(1), cy: Y(1), r: 6 }, svg);
+    const g = el('text', { class: 'goal-t', x: X(1) - 26, y: Y(1) - 14, 'text-anchor': 'end' }, svg);
+    g.textContent = 'Curve full: moves to a trading pool';
+
+    // Nearby coins get nudged upward so they do not sit on top of each other.
+    const coins = list.slice(0, 14).map(c => ({ c, p: Math.max(0, Math.min(1, Number(c.progress) || 0)) })).sort((x, y) => x.p - y.p);
+    const placed = [];
+    coins.forEach(({ c, p }) => {
+      const cx = X(p);
+      let cy = Y(p) - 18;
+      let tries = 0;
+      while (placed.some(q => Math.hypot(q.x - cx, q.y - cy) < 30) && tries++ < 12) cy -= 16;
+      placed.push({ x: cx, y: cy });
+      const pct = Math.round(p * 100);
+      const g2 = el('g', { class: 'pin', tabindex: '0', role: 'button', 'aria-label': c.name + ', ' + pct + '% full. Open its page.' }, svg);
+      el('title', {}, g2).textContent = c.name + ' $' + c.symbol + ' · ' + pct + '% full';
+      el('circle', { class: 'ring', cx: cx, cy: cy, r: 15 }, g2);
+      if (typeof c.imageUrl === 'string' && /^\/art\/[0-9a-f]{16}\.(png|jpg)$/.test(c.imageUrl)) {
+        const id = 'clip' + placed.length;
+        const cp = el('clipPath', { id: id }, g2);
+        el('circle', { cx: cx, cy: cy, r: 12 }, cp);
+        el('image', { href: c.imageUrl, x: cx - 12, y: cy - 12, width: 24, height: 24, 'clip-path': 'url(#' + id + ')', preserveAspectRatio: 'xMidYMid slice' }, g2);
+      } else {
+        el('text', {x: cx, y: cy}, g2).textContent = (c.name || '?').charAt(0).toUpperCase();
+      }
+      const open = () => { location.href = '/coin/' + encodeURIComponent(c.pool); };
+      g2.addEventListener('click', open);
+      g2.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+  }
+
+  let lastList = [];
+  async function load() {
+    try {
+      const padSlug = window.PAD.extra && window.PAD.extra.slug;
+      const res = await fetch('/api/launches' + (padSlug ? '?pad=' + encodeURIComponent(padSlug) : ''), { cache: 'no-store', headers: { Accept: 'application/json' } });
+      const body = await res.json();
+      const list = Array.isArray(body && body.launches) ? body.launches : [];
+      const box = $('feed');
+      box.textContent = '';
+      list.forEach(c => box.appendChild(card(c)));
+      lastList = list;
+      const cc = $('coin-count'); if (cc) cc.textContent = list.length ? '(' + list.length + ')' : '';
+      drawCurve(list);
+      $('feed-note').textContent = list.length ? '' : 'No coins yet. Launch the first one below.';
+    } catch (err) {
+      $('feed-note').textContent = 'Could not load the latest launches. Try again in a moment.';
+    }
+  }
+
+  // New launches appear after the page launches one, and the list quietly refreshes while the tab is open.
+  document.addEventListener('animalpad:launched', () => [3000, 8000, 16000, 30000, 60000].forEach(ms => setTimeout(load, ms)));
+  setInterval(() => { if (!document.hidden) load(); }, 60000);
+  load();
+
+  // Fee wording straight from the server's settings, so it can never disagree with what is deployed.
+  fetch('/api/launch/config', { headers: { Accept: 'application/json' } })
+    .then(r => r.json())
+    .then(info => {
+      const t = info && info.split;
+      if (!t || !Number.isFinite(t.creatorPct) || !Number.isFinite(t.platformPct)) return;
+      const ex = window.PAD.extra, owner = ex && ex.ownerPct > 0 ? Math.min(ex.ownerPct, 50 - t.platformPct) : 0;
+      $('fee-note-how').textContent = 'Every trade pays a creator fee, shared on-chain: ' + (t.creatorPct - owner) + '% to the wallet that launched the coin, ' + (owner ? owner + '% to the owner of ' + window.PAD.name + ', ' : '') + t.platformPct + '% to ' + window.PAD.platform + '. Anyone can send the fees out; they always go to the wallets in the split.';
+    })
+    .catch(() => { /* the generic sentence stays */ });
+})();

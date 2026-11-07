@@ -1,0 +1,15 @@
+{
+  "id": "novamppad",
+  "name": "NoVampPad",
+  "subject": "coin",
+  "subjects": "coins",
+  "tagline": "Every coin here is an original.",
+  "description": "A pump.fun launchpad that refuses copies: one coin per ticker, name and picture.",
+  "heroTitle": "Every coin here is an original.",
+  "heroLede": "One coin per ticker, name and picture. No copies, no vamps.",
+  "founderName": "NoVampPad",
+  "founderSymbol": "NOVAMP",
+  "founderDescription": "The first original on NoVampPad.",
+  "fees": { "platformSharePct": 10 },
+  "theme": {}
+}
