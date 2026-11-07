@@ -1,24 +1,16 @@
-/* NoVampPad look. Loaded after app.css, so it replaces BuildAPad's graphite-and-orange tokens with a light "registry" palette
-   and a dark one, tightens the shapes, and styles the live ticker check. */
+/* NoVampPad look. Loaded after app.css, so it replaces BuildAPad's graphite-and-orange tokens with a near-black palette and a blood-red accent,
+   tightens the shapes, and styles the live ticker check. */
 :root {
-  --ground: #eef1ed; --paper: #ffffff; --soft: #e5eae5; --raise: #dce3dc;
-  --text: #0d1a16; --muted: #50625a; --line: #cbd5cd; --grid: transparent;
-  --accent: #0a7a55; --on-accent: #ffffff; --edge: #0a7a55; --pop: #8a6a00; --ok: #0a7a55; --bad: #bd2f27;
+  --ground: #070708; --paper: #0f0d10; --soft: #151216; --raise: #1c181d;
+  --text: #ece6e1; --muted: #9a8f93; --line: #271f25; --grid: transparent;
+  --accent: #c8263a; --on-accent: #fff5f3; --edge: #c8263a; --pop: #e7b25a; --ok: #3bdc98; --bad: #ff6b57;
   --r: 10px; --r-sm: 7px;
   --font: "Instrument Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  color-scheme: light;
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ground: #08100d; --paper: #0e1814; --soft: #14201b; --raise: #1a2923;
-    --text: #e6f1ec; --muted: #8da49a; --line: #20302a;
-    --accent: #3bdc98; --on-accent: #03130c; --edge: #3bdc98; --pop: #e7c25a; --ok: #3bdc98; --bad: #ff7b6e;
-    color-scheme: dark;
-  }
-}
-body { background-image: none; font-size: 16px; }
+body { background-image: radial-gradient(900px 380px at 50% -140px, rgba(200,38,58,.16), transparent 70%); background-repeat: no-repeat; font-size: 16px; }
 .wrap { gap: 72px; max-width: 1080px; }
 h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; }
 
@@ -35,6 +27,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); outline
 .btn, button.btn { border-radius: var(--r-sm); background: var(--paper); border: 1px solid var(--line); color: var(--text); font-weight: 600; box-shadow: none; }
 .btn:hover:not(:disabled) { border-color: var(--text); background: var(--paper); }
 .btn.go { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.go:focus-visible { outline-color: var(--text); }
 .btn.go:hover:not(:disabled) { background: var(--accent); filter: brightness(1.08); border-color: var(--accent); }
 .drop { border-radius: var(--r); border: 1.5px dashed var(--line); background: var(--paper); }
 .badge { border-radius: 6px; font-family: var(--mono); font-size: .75rem; }
@@ -55,6 +48,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); outline
 .nvresult .stamp { flex: none; font: 700 .8rem/1 var(--mono); padding: 7px 10px; border-radius: 5px; border: 2px solid currentColor; transform: rotate(-3deg); letter-spacing: .04em; }
 .nvresult.free { color: var(--ok); }
 .nvresult.taken { color: var(--bad); }
+.nvcheck { border-color: color-mix(in srgb, var(--accent) 28%, var(--line)); }
 .nvresult.idle { color: var(--muted); }
 .nvresult .msg { color: var(--text); }
 .nvcheck .count { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
