@@ -26,10 +26,6 @@
     $('b-buy').textContent = 'First buy of ' + ex.minFirstBuySol + ' SOL or more required'; $('b-buy').hidden = false;
     const buy = $('l-buy'); if (buy) { buy.min = String(ex.minFirstBuySol); buy.placeholder = String(ex.minFirstBuySol); }
   }
-  $('edit-pad').setAttribute('href', '/build?edit=' + encodeURIComponent(ex.slug || ''));
-  const showEdit = addr => { $('edit-pad').hidden = !(addr && addr === ex.ownerWallet); };
-  document.addEventListener('animalpad:wallet', e => showEdit(e.detail && e.detail.address));
-  if (window.AnimalWallet && window.AnimalWallet.address) showEdit(window.AnimalWallet.address);
 
   // The fee split, from the server's real numbers
   fetch('/api/launch/config', { headers: { Accept: 'application/json' } }).then(r => r.json()).then(info => {
