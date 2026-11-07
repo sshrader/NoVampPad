@@ -133,7 +133,7 @@
     });
   }
 
-  // Creator fees: anyone can see the amount and anyone can send it out. It always goes to the wallets in the
+  // Creator fees: anyone can see the amount, and the coin's creator sees the button to send it out. It always goes to the wallets in the
   // coin's fee split (the creator and HatchPad), never to whoever pressed the button.
   function startFees(parent, c) {
     const W = window.AnimalWallet;
@@ -155,7 +155,8 @@
       if (info.holderRewards) { text.textContent = 'Holder rewards: all creator fees on this coin go to its holders automatically. Nothing to send out.'; btn.hidden = true; fix.hidden = true; return; }
       text.textContent = 'Creator fees waiting: ' + (info.paired && Number.isFinite(info.usdPerUnit) ? AnimalNet.usd(info.pendingSol * info.usdPerUnit) + ' (' + info.pendingSol.toLocaleString(undefined, { maximumFractionDigits: 4 }) + ' ' + (c.pairSymbol || 'pair token') + ')' : info.pendingSol.toFixed(6) + ' ' + (c.pairSymbol || (info.paired ? 'pair token' : 'SOL'))) +
         (info.splitOk ? ' · split ' + window.feeLine(info) : ' · fee split not set yet');
-      btn.hidden = false;
+      // Only the wallet that launched the coin sees the button. (The payout itself always goes to the wallets in the split.)
+      btn.hidden = !(W && W.address && W.address === c.creator);
       btn.disabled = busy || !info.splitOk || !(info.pendingSol > 0.00001);
       // A launch that stopped before the fee split can be finished here by the creator's wallet.
       fix.hidden = info.splitOk || !W || !W.address || W.address !== c.creator;
