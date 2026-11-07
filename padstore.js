@@ -265,7 +265,7 @@ function createPadStore(opts) {
   // The site's one built-in launchpad: made once at start from the server's own settings, not from a signed form.
   function seed(spec, logoBuf) {
     if (entries.some(e => e.slug === spec.slug)) return false;
-    const entry = { slug: spec.slug, name: spec.name, tagline: spec.tagline, accent: spec.accent, corners: spec.corners || 'round', ownerWallet: spec.ownerWallet, payoutWallet: spec.ownerWallet, ownerPct: 0, links: {}, settings: normalizeSettings({}).settings, logoExt: 'png', createdAt: now() };
+    const entry = { slug: spec.slug, name: spec.name, tagline: spec.tagline, accent: spec.accent, corners: spec.corners || 'round', ownerWallet: spec.ownerWallet, payoutWallet: spec.ownerWallet, ownerPct: 0, links: {}, settings: normalizeSettings({}).settings, logoExt: 'png', home: true, createdAt: now() };
     if (!saveImage(spec.slug, 'png', logoBuf, '')) return false;
     entries.push(entry); save();
     return true;
@@ -297,8 +297,8 @@ function createPadStore(opts) {
     const e = entries.find(x => x.slug === slug);
     if (!e) return null;
     const pad = pads.normalize({
-      id: e.slug, name: e.name, tagline: e.tagline || 'Launch a coin.', description: (e.tagline || 'Launch a coin') + ' on ' + e.name + ', a Solana launchpad built with BuildAPad.',
-      theme: { dark: { accent: e.accent, 'on-accent': onAccent(e.accent), edge: e.accent }, radius: e.corners === 'sharp' ? 2 : 14 }
+      id: e.slug, name: e.name, tagline: e.tagline || 'Launch a coin.', description: e.home ? (e.tagline + ' A pump.fun launchpad that refuses copies.') : (e.tagline || 'Launch a coin') + ' on ' + e.name + ', a Solana launchpad built with BuildAPad.',
+      theme: e.home ? {} : { dark: { accent: e.accent, 'on-accent': onAccent(e.accent), edge: e.accent }, radius: e.corners === 'sharp' ? 2 : 14 }
     }, 'pad ' + e.slug);
     const s = settingsOf(e);
     // The page gets what it needs to show the right things. The wallet lists stay on the server.

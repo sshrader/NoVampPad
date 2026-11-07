@@ -242,6 +242,14 @@ function createApp(opts) {
       return;
     }
 
+    // Is this ticker or name still free? A quick yes or no for the home page's live check. It reads the list; it holds nothing.
+    if (pathname === '/api/originals/check' && (req.method === 'GET' || req.method === 'HEAD')) {
+      const noStore = Object.assign({}, JSON_TYPE, { 'Cache-Control': 'no-store' });
+      if (!unique) return send(res, 404, JSON.stringify({ error: 'not_found' }), noStore);
+      const v = unique.check({ symbol: String(url.searchParams.get('symbol') || '').slice(0, 12), name: String(url.searchParams.get('name') || '').slice(0, 40), hash: '', creator: '' });
+      return send(res, 200, req.method === 'HEAD' ? '' : JSON.stringify({ ok: v.ok, error: v.error || '', by: v.by ? { symbol: v.by.symbol, name: v.by.name } : null, count: unique.size() }), noStore);
+    }
+
     // One site, one launchpad: nobody builds more.
     if (homePad && (pathname === '/build' || pathname === '/api/builder/config' || (req.method === 'POST' && /^\/api\/pads(\/|$)/.test(pathname)))) return send(res, 404, 'Not found', TEXT_TYPE);
 

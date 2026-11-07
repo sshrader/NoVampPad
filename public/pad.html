@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{name}}</title>
 <meta name="description" content="{{description}}">
-<meta name="theme-color" content="#0a0b0e">
+<meta name="theme-color" content="#08100d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <meta property="og:title" content="{{name}}">
 <meta property="og:description" content="{{tagline}}">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="/app.css">
+<link rel="stylesheet" href="/nv.css">
 </head>
 <body>
 <main class="wrap">
@@ -26,11 +27,19 @@
     </div>
   </header>
 
-  <section class="padhero" aria-labelledby="h1">
-    <h1 id="h1">Launch your coin on {{name}}.</h1>
-    <p class="lede">{{tagline}}</p>
-    <div class="row"><span class="badge" id="b-private" hidden>Private launchpad</span><span class="badge" id="b-buy" hidden></span><span class="badge" id="b-pair" hidden></span><a class="btn" href="/rules">Rules</a></div>
-    <div class="row"><a class="btn go" href="#start">Launch a coin</a><a class="btn" href="#recent">See the coins <span class="hint" id="coin-count"></span></a></div>
+  <section class="nvhero" aria-labelledby="h1">
+    <div>
+      <h1 id="h1">One ticker. One name. One picture.</h1>
+      <p class="lede">Every coin launched here is checked against every coin already here. Copies don't get built.</p>
+      <div class="row ctas"><a class="btn go" href="#start">Launch a coin</a><a class="btn" href="#recent">See the coins <span class="hint" id="coin-count"></span></a><a class="btn" href="/rules">Rules</a></div>
+      <div class="row"><span class="badge" id="b-private" hidden>Private launchpad</span><span class="badge" id="b-buy" hidden></span><span class="badge" id="b-pair" hidden></span></div>
+    </div>
+    <form class="nvcheck" id="nvcheck" autocomplete="off" onsubmit="return false">
+      <label for="nv-q">Is your ticker free?</label>
+      <div class="nvfield"><span class="dollar" aria-hidden="true">$</span><input type="text" id="nv-q" maxlength="10" placeholder="PEPE" spellcheck="false" autocapitalize="characters"></div>
+      <p class="nvresult idle" id="nv-result" role="status" aria-live="polite"><span class="msg">Type a ticker to check it against every coin launched here.</span></p>
+      <p class="count" id="nv-count"></p>
+    </form>
   </section>
 
   <section class="stack" id="padinfo" hidden>
@@ -168,6 +177,7 @@
 <script src="/walletbar.js"></script>
 <script src="/image.js"></script>
 <script src="/pad.js"></script>
+<script src="/nv.js"></script>
 <script src="/launch.js"></script>
 <script src="/trade.js"></script>
 <script src="/feed.js"></script>
